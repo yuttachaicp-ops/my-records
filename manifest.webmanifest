@@ -3,7 +3,7 @@
   "short_name": "My Records",
   "description": "แดชบอร์ดรายรับรายจ่ายของน้องแมว",
   "lang": "th",
-  "start_url": "./",
+  "start_url": "./?app=2",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
@@ -22,5 +22,6 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
-  ]
+  ],
+  "id": "/my-records/app-v2"
 }

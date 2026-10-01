@@ -1,5 +1,5 @@
 // เก็บหน้าแอปไว้ในเครื่อง เปิดได้เร็วและขึ้นหน้า "ไม่มีอินเทอร์เน็ต" ได้แม้ออฟไลน์
-const CACHE = 'my-records-v1';
+const CACHE = 'my-records-v2';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', (e) => {
