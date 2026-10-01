@@ -95,7 +95,9 @@
   }
 
   function clean(raw) {
-    var m = String(raw || '').match(/https:\/\/script\.google(?:usercontent)?\.com\/[^\s"'<>]+/);
+    var s = String(raw || '').replace(/\s+/g, '');
+    for (var i = 0; i < 3 && /%3A|%2F/i.test(s); i++) { try { s = decodeURIComponent(s); } catch (e) { break; } }
+    var m = s.match(/https:\/\/script\.google(?:usercontent)?\.com\/[^\s"'<>#]+/);
     if (!m) return '';
     var u = m[0];
     if (!/[?&]view=dash/.test(u) || !/[?&]key=/.test(u)) return '';
