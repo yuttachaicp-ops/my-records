@@ -111,8 +111,22 @@
     $('loadMsg').textContent = 'กำลังโหลดข้อมูล…';
     var slow = setTimeout(function () { $('loadMsg').textContent = 'ใกล้เสร็จแล้ว รอสักครู่นะ…'; }, 6000);
     var f = $('frame');
-    f.onload = function () { clearTimeout(slow); show(null); };
-    f.src = u + (u.indexOf('?') < 0 ? '?' : '&') + 't=' + Date.now();
+    var done = function () { clearTimeout(slow); show(null); };
+    // ดึง HTML โดยไม่ส่งคุกกี้ Google (กัน "ไม่สามารถเปิดไฟล์ได้" เมื่อล็อกอิน Google หลายบัญชี)
+    fetch(u + '&fmt=raw&t=' + Date.now(), { credentials: 'omit', cache: 'no-store' })
+      .then(function (r) { return r.text(); })
+      .then(function (html) {
+        if (html.trim() === 'BADKEY') { clearTimeout(slow); setup(true); $('err').textContent = 'ลิงก์หมดอายุแล้ว พิมพ์ "ลิงก์แอป" ในแชทบอทเพื่อเอาลิงก์ใหม่'; return; }
+        if (html.indexOf('<html') < 0 && html.indexOf('<!') < 0) throw new Error('bad');
+        f.onload = done;
+        f.removeAttribute('src');
+        f.srcdoc = html;
+      })
+      .catch(function () {   // สำรอง: เปิดแบบเดิม
+        f.onload = done;
+        f.removeAttribute('srcdoc');
+        f.src = u + '&t=' + Date.now();
+      });
   }
 
   function setup(canCancel) {
